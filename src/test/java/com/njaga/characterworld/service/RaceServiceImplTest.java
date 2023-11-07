@@ -67,7 +67,7 @@ class RaceServiceImplTest {
         List<RaceResponseDTO> responseDTOS = raceService.getAll();
 
         Assertions.assertAll(
-                () -> assertTrue(responseDTOS.isEmpty())
+                () -> assertFalse(responseDTOS.isEmpty())
         );
     }
 

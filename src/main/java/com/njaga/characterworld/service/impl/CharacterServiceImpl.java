@@ -12,7 +12,6 @@ import com.njaga.characterworld.service.CharacterService;
 import com.njaga.characterworld.service.RaceService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,7 +42,17 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public CharacterLiteResponseDTO update(Long id, CharacterRequestDTO requestDTO) {
-        return null;
+        Character character = getOneInternal(id);
+        character.setName(requestDTO.getName());
+        character.setBio(requestDTO.getBio());
+        character.setGender(requestDTO.getGender());
+        character.setStatus(requestDTO.getStatus());
+        RaceResponseDTO raceResponseDTO = raceService.getOne(requestDTO.getRaceId());
+        Race race = new Race();
+        race.setId(raceResponseDTO.getId());
+        character.setRace(race);
+        characterRepository.save(character);
+        return createCharacterResponseDTO(character, true);
     }
 
     @Override
